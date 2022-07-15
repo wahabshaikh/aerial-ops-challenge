@@ -1,34 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Aerial Ops Code Challenge
 
-## Getting Started
+## Problem Statement
 
-First, run the development server:
+1. In a new public github repo, create a front-end react / nextjs / typescript app with a mock user [table in Matine](https://mantine.dev/core/table/) (3 rows X 4 columns).  Fill it with some mock data.  The table should take up the width of the window.
+2. In the last column, place a variable number of div elements that contain short bits of text — i.e. their size of each div is determined by the length of the text, as see below:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+![Untitled](https://elderly-variraptor-b2c.notion.site/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F225978f3-f677-4280-a9c4-91096f84a15d%2FUntitled.png?table=block&id=249b2037-f864-414e-ad05-bd7cb7fadeba&spaceId=550a6008-0a78-4504-8569-4415a9acaea3)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. If there is not enough space (e.g. the table is resized or it’s loaded on a smaller screen), collapse these the individual documents into a single button that says “Documents” with a “chevron” icon on the right.  Clicking on this button opens up a menu that displays the individual documents vertically.  The breakpoint where this behavior happens should automatically depend on the total width of documents in each row (i.e. not a global constant).  So if there are different numbers of documents on each row, they may turn into the “Documents” button at different widths.
+4. If there are more than 4 vertical documents in the menu, make the menu scrollable.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Bonus points for using mantine elements (e.g. [Mantine Group](https://mantine.dev/core/group/) / [Mantine Stack](https://mantine.dev/core/stack/)) where possible. 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Bonus points if you can accomplish #3 and #4 using just CSS (no JS).
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Bonus points for making the UX aesthetically pleasing
 
-## Learn More
+Bonus points for making it easy for me to run your solution to verify it
 
-To learn more about Next.js, take a look at the following resources:
+## Solution
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- I calculate the height of the [group container](https://github.com/wahabshaikh/aerial-ops-challenge/blob/main/components/List.tsx#L27) using the browser and store it as [`MAX_HEIGHT`](https://github.com/wahabshaikh/aerial-ops-challenge/blob/main/components/List.tsx#L19).
+- Using [`use-resize-observer` hook](https://mantine.dev/hooks/use-resize-observer/), I keep listening to the height of the group container.
+- On resizing the browser, when there is not enough space for the group elements, they wrap onto the next line, thereby increasing the height of the group container.
+- I use this treshold point to make a comparison and then dynamically assign styles to toggle the visibility and position of the group elements.
+- Similarly, I store the [ROW_GAP](https://github.com/wahabshaikh/aerial-ops-challenge/blob/main/components/List.tsx#L20) and [calculate the height](https://github.com/wahabshaikh/aerial-ops-challenge/blob/main/components/List.tsx#L64) of the [ScrollArea](https://mantine.dev/core/scroll-area/) such that it displays a scroller when there are more than 4 group elements.
